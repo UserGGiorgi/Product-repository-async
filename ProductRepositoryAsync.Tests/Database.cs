@@ -7,7 +7,7 @@ namespace ProductRepositoryAsync.Tests;
 public class Database : IDatabase
 {
     private readonly object lockObject = new();
-    private readonly Dictionary<string, Collection> database = new();
+    private readonly Dictionary<string, Collection> database = [];
 
     public bool IsCollectionExistAsyncFailure { get; init; }
 
@@ -37,6 +37,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -68,6 +70,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -96,6 +100,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -126,6 +132,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -159,6 +167,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -195,6 +205,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -235,6 +247,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -271,6 +285,8 @@ public class Database : IDatabase
                 return Task.FromResult(OperationResult.ConnectionIssue);
             case true:
                 return Task.FromResult(OperationResult.Failure);
+            default:
+                break;
         }
 
         if (!IsValidCollectionName(collectionName))
@@ -337,6 +353,6 @@ public class Database : IDatabase
     {
         public int Id { get; private set; } = id;
 
-        public Dictionary<string, string> Properties { get; } = new();
+        public Dictionary<string, string> Properties { get; } = [];
     }
 }
