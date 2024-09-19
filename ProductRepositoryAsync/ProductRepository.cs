@@ -5,10 +5,16 @@ namespace ProductRepositoryAsync;
 /// <summary>
 /// Represents a product storage service and provides a set of methods for managing the list of products.
 /// </summary>
-public class ProductRepository(string productCollectionName, IDatabase database) : IProductRepository
+public class ProductRepository : IProductRepository
 {
-    private readonly string productCollectionName = productCollectionName;
-    private readonly IDatabase database = database;
+    private readonly string productCollectionName;
+    private readonly IDatabase database;
+
+    public ProductRepository(string productCollectionName, IDatabase database)
+    {
+        this.productCollectionName = productCollectionName;
+        this.database = database;
+    }
 
     public async Task<int> AddProductAsync(Product product)
     {
@@ -176,6 +182,12 @@ public class ProductRepository(string productCollectionName, IDatabase database)
 
     public async Task UpdateProductAsync(Product product)
     {
+        ValidateProduct(product);
+        await this.UpdateProductInDatabaseAsync(product);
+    }
+
+    private static void ValidateProduct(Product product)
+    {
         if (product == null)
         {
             throw new ArgumentException("Product cannot be null.", nameof(product));
@@ -190,7 +202,10 @@ public class ProductRepository(string productCollectionName, IDatabase database)
         {
             throw new ArgumentException("Product price and stock must be non-negative.", nameof(product));
         }
+    }
 
+    private async Task UpdateProductInDatabaseAsync(Product product)
+    {
         var result = await this.database.IsCollectionExistAsync(this.productCollectionName, out bool collectionExists);
 
         if (result == OperationResult.ConnectionIssue)
@@ -241,29 +256,6 @@ public class ProductRepository(string productCollectionName, IDatabase database)
         else if (result != OperationResult.Success)
         {
             throw new RepositoryException("Failed to update the product.");
-        }
-    }
-
-    private static void ValidateProduct(Product product)
-    {
-        if (string.IsNullOrWhiteSpace(product.Name))
-        {
-            throw new ArgumentException("Product name cannot be empty or whitespace.", nameof(product));
-        }
-
-        if (string.IsNullOrWhiteSpace(product.Category))
-        {
-            throw new ArgumentException("Product category cannot be empty or whitespace.", nameof(product));
-        }
-
-        if (product.UnitPrice < 0)
-        {
-            throw new ArgumentException("Product unit price must be greater than or equal to zero.", nameof(product));
-        }
-
-        if (product.UnitsInStock < 0)
-        {
-            throw new ArgumentException("Product units in stock must be greater than or equal to zero.", nameof(product));
         }
     }
 }
