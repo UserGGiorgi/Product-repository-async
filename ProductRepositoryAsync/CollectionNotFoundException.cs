@@ -1,3 +1,5 @@
+using System.Runtime.Serialization;
+
 namespace ProductRepositoryAsync;
 
 /// <summary>
@@ -27,5 +29,11 @@ public class CollectionNotFoundException : Exception
     public CollectionNotFoundException(string message, Exception innerException)
         : base(message, innerException)
     {
+    }
+
+    [Obsolete("GetObjectData is obsolete and should not be used. Consider alternative serialization methods.")]
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        base.GetObjectData(info, context);
     }
 }
